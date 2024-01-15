@@ -83,6 +83,19 @@ class _LKTestState extends State<LKTest> {
     return slow;
   }
 
+  /// 383. 赎金信
+  bool canConstruct(String ransomNote, String magazine) {
+    for (var note in ransomNote.split('')) {
+      if (magazine.contains(note)) {
+        magazine = magazine.replaceFirst(note, '');
+      } else {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   /// 1342. 将数字变成 0 的操作次数
   int numberOfSteps(int num) {
     if (num == 0) return 0;
@@ -213,6 +226,7 @@ class _LKTestState extends State<LKTest> {
     final data = [
       _ButtonData('1. 两数之和', _1twoSum),
       _ButtonData('82. 删除排序链表中的重复元素 II', _82deleteDuplicates),
+      _ButtonData('383. 赎金信', _383canConstruct),
       _ButtonData('412. Fizz Buzz', _412fizzBuzz),
       _ButtonData('876. 链表的中间结点', _876middleNode),
       _ButtonData('1342. 将数字变成 0 的操作次数', _1342numberOfSteps),
@@ -242,6 +256,11 @@ class _LKTestState extends State<LKTest> {
         ListNode(1, ListNode(1, ListNode(2, ListNode(3, ListNode(3)))));
     final r = deleteDuplicates(head);
     debugPrint(r.toString());
+  }
+
+  void _383canConstruct() {
+    final r = canConstruct("aa", "ab");
+    debugPrint('$r');
   }
 
   void _412fizzBuzz() {
