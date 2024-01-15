@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 class LKTest extends StatefulWidget {
@@ -21,6 +19,36 @@ class _LKTestState extends State<LKTest> {
     }
 
     return [0, 0];
+  }
+
+  /// 82. 删除排序链表中的重复元素
+  ListNode? deleteDuplicates(ListNode? head) {
+    ListNode? r = head;
+
+    int? preVal; // 标记上一个值（已经删除的）
+    ListNode? current = r;
+    ListNode? next = r?.next;
+    while (current != null) {
+      if (preVal == current.val || current.val == next?.val) {
+        // 删除当前节点
+        if (r?.val == current.val) {
+          // 启动头往后移
+          r = current.next;
+        } else {
+          ListNode? cur = r; // 找到r中需要删除的当前节点
+          while (cur?.next?.val != current.val) {
+            cur = cur?.next;
+          }
+          cur?.next = current.next;
+        }
+      }
+
+      preVal = current.val;
+      current = current.next;
+      next = current?.next;
+    }
+
+    return r;
   }
 
   /// 412. Fizz Buzz
@@ -182,88 +210,107 @@ class _LKTestState extends State<LKTest> {
 
   @override
   Widget build(BuildContext context) {
+    final data = [
+      _ButtonData('1. 两数之和', _1twoSum),
+      _ButtonData('82. 删除排序链表中的重复元素 II', _82deleteDuplicates),
+      _ButtonData('412. Fizz Buzz', _412fizzBuzz),
+      _ButtonData('876. 链表的中间结点', _876middleNode),
+      _ButtonData('1342. 将数字变成 0 的操作次数', _1342numberOfSteps),
+      _ButtonData('1480. 一维数组的动态和', _1480runningSum),
+      _ButtonData('1672. 最富有客户的资产总量', _1672maximumWealth),
+      _ButtonData('2085. 统计出现过一次的公共字符串', _2085countWords),
+      _ButtonData('2645. 构造有效字符串的最少插入数', _2645addMinimum),
+      _ButtonData('2696. 删除子串后的字符串最小长度', _2696minLength),
+    ];
+
     return Scaffold(
       appBar: AppBar(title: const Text('LeetCode')),
-      body: ListView(
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              List<int> nums = [2, 5, 5, 11];
-              int target = 10;
-              final r = twoSum(nums, target);
-              debugPrint('$r');
-            },
-            child: const Text('1. 两数之和'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              final r = fizzBuzz(15);
-              debugPrint('$r');
-            },
-            child: const Text('412. Fizz Buzz'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              // 创建链表 [1,2,3,4,5]
-              ListNode head = ListNode(
-                  1, ListNode(2, ListNode(3, ListNode(4, ListNode(5)))));
-              final r = middleNode(head);
-              debugPrint(r.toString());
-            },
-            child: const Text('876. 链表的中间结点'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              final r = numberOfSteps(14);
-              debugPrint('$r');
-            },
-            child: const Text('1342. 将数字变成 0 的操作次数'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              List<int> nums = [2, 5, 5, 11];
-              final r = runningSum(nums);
-              debugPrint('$r');
-            },
-            child: const Text('1480. 一维数组的动态和'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              List<List<int>> accounts = [
-                [1, 2, 3],
-                [3, 2, 1]
-              ];
-              final r = maximumWealth(accounts);
-              debugPrint('$r');
-            },
-            child: const Text('1672. 最富有客户的资产总量'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              final word1 = ["a", "ab"];
-              final word2 = ["a", "a", "a", "ab"];
-              final r = countWords(word1, word2);
-              debugPrint('$r');
-            },
-            child: const Text('2085. 统计出现过一次的公共字符串'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              final r = addMinimum("c");
-              debugPrint('$r');
-            },
-            child: const Text('2645. 构造有效字符串的最少插入数'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              const s = "ABFCACDB";
-              final r = minLength(s);
-              debugPrint('$r');
-            },
-            child: const Text('2696. 删除子串后的字符串最小长度'),
-          ),
-        ],
-      ),
+      body: ListView(children: data.map((e) => _Button(e)).toList()),
+    );
+  }
+
+  void _1twoSum() {
+    List<int> nums = [2, 5, 5, 11];
+    int target = 10;
+    final r = twoSum(nums, target);
+    debugPrint('$r');
+  }
+
+  void _82deleteDuplicates() {
+    // 创建链表
+    ListNode head =
+        ListNode(1, ListNode(1, ListNode(2, ListNode(3, ListNode(3)))));
+    final r = deleteDuplicates(head);
+    debugPrint(r.toString());
+  }
+
+  void _412fizzBuzz() {
+    final r = fizzBuzz(15);
+    debugPrint('$r');
+  }
+
+  void _876middleNode() {
+    // 创建链表 [1,2,3,4,5]
+    ListNode head =
+        ListNode(1, ListNode(2, ListNode(3, ListNode(4, ListNode(5)))));
+    final r = middleNode(head);
+    debugPrint(r.toString());
+  }
+
+  void _1342numberOfSteps() {
+    final r = numberOfSteps(14);
+    debugPrint('$r');
+  }
+
+  void _1480runningSum() {
+    List<int> nums = [2, 5, 5, 11];
+    final r = runningSum(nums);
+    debugPrint('$r');
+  }
+
+  void _1672maximumWealth() {
+    List<List<int>> accounts = [
+      [1, 2, 3],
+      [3, 2, 1]
+    ];
+    final r = maximumWealth(accounts);
+    debugPrint('$r');
+  }
+
+  void _2085countWords() {
+    final word1 = ["a", "ab"];
+    final word2 = ["a", "a", "a", "ab"];
+    final r = countWords(word1, word2);
+    debugPrint('$r');
+  }
+
+  void _2645addMinimum() {
+    final r = addMinimum("c");
+    debugPrint('$r');
+  }
+
+  void _2696minLength() {
+    const s = "ABFCACDB";
+    final r = minLength(s);
+    debugPrint('$r');
+  }
+}
+
+class _ButtonData {
+  final VoidCallback onPressed;
+  final String title;
+  _ButtonData(this.title, this.onPressed);
+}
+
+class _Button extends StatelessWidget {
+  const _Button(this.data);
+  final _ButtonData data;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: data.onPressed,
+      child: Text(data.title),
     );
   }
 }
@@ -273,6 +320,13 @@ class ListNode {
   ListNode? next;
   ListNode([this.val = 0, this.next]);
 
-  @override
-  String toString() => '$val';
+  // @override
+  // String toString() {
+  //   List list = [val];
+  //   while (next != null) {
+  //     list.add(next?.val);
+  //   }
+  //
+  //   return list.toString();
+  // }
 }
