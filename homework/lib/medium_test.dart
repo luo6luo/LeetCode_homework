@@ -41,6 +41,29 @@ class _MediumTestState extends State<MediumTest> {
     return r;
   }
 
+  /// 2171. 拿出最少数目的魔法豆
+  ///
+  /// * 题目解：
+  ///   袋子可以为空，但必须至少有一个非空的袋子，最后所有袋子中豆子数，不是某个袋子中豆子数就是0。
+  ///   假设 target 为目标袋豆子数，豆子总数是 s，
+  ///   - 大于 target 则 beans[i] - target 颗豆子；
+  ///   - 小于 target 的清 0；
+  int minimumRemoval(List<int> beans) {
+    if (beans.isEmpty) return 0;
+
+    beans.sort((l, r) => l.compareTo(r));
+    final sum = beans.fold(0, (pre, e) => pre + e);
+
+    int? r; // 拿出来的总豆子数
+    for (int i = 0; i < beans.length; i++) {
+      // 假设当前 i 是最终的目标袋下标
+      final total = sum - (beans.length - i) * beans[i];
+      r = (r ?? total) < total ? r : total;
+    }
+
+    return r!;
+  }
+
   /// 2645. 构造有效字符串的最少插入数
   ///
   /// * 解法：贪心算法，和前面的字母组合成最有效的字符
@@ -84,6 +107,7 @@ class _MediumTestState extends State<MediumTest> {
   Widget build(BuildContext context) {
     final data = [
       ButtonData('82. 删除排序链表中的重复元素 II', deleteDuplicates_82),
+      ButtonData('2171. 拿出最少数目的魔法豆', minimumRemoval_2171),
       ButtonData('2645. 构造有效字符串的最少插入数', addMinimum_2645),
     ];
 
@@ -99,6 +123,11 @@ class _MediumTestState extends State<MediumTest> {
         ListNode(1, ListNode(1, ListNode(2, ListNode(3, ListNode(3)))));
     final r = deleteDuplicates(head);
     debugPrint(r.toString());
+  }
+
+  void minimumRemoval_2171() {
+    final r = minimumRemoval([2, 10, 3, 2]);
+    debugPrint('$r');
   }
 
   void addMinimum_2645() {
