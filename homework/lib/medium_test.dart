@@ -41,6 +41,50 @@ class _MediumTestState extends State<MediumTest> {
     return r;
   }
 
+  /// 670. 最大交换
+  ///
+  /// 一遍循环：https://leetcode.cn/problems/maximum-swap/solutions/2614470/yi-ci-bian-li-jian-ji-xie-fa-pythonjavac-c9b1/?envType=daily-question&envId=2024-01-22
+  /// 解题：找到 最右侧最大值 和 最左侧小于最大值的值，这这两个值交换
+  ///
+  ///  ```
+  ///    else if (s[i] < s[maxIdx]) { // s[i] 右边有比它大的
+  ///      p  = i;
+  ///      q = maxIdx; // 更新 p 和 q
+  ///    }
+  ///    这是为了找到左侧小于最大值的下标，最后需要和最大值交换
+  ///  ```
+  int maximumSwap(int num) {
+    List<String> nums = num.toString().split('');
+    if (nums.length == 1) return num;
+
+    List<String> sortNums = List.from(nums);
+    sortNums.sort((l, r) => int.parse(r).compareTo(int.parse(l)));
+
+    int? replaceIndex; // nums中，需要被替换为最大值的下标
+    String? max; // 需要将上面这个下标替换为的最大值，但是这个最大值实际下标目前未知
+    for (int i = 0; i < nums.length; i++) {
+      if (int.parse(nums[i]) < int.parse(sortNums[i])) {
+        max = sortNums[i];
+        replaceIndex = i;
+        break;
+      }
+    }
+    if (replaceIndex == null) return num;
+
+    // 寻找需要替换的最大值的实际下标
+    int? maxIndex;
+    for (int i = nums.length - 1; i >= 0; i--) {
+      if (max == nums[i]) {
+        maxIndex = i;
+        break;
+      }
+    }
+
+    nums.replaceRange(maxIndex!, maxIndex + 1, [nums[replaceIndex]]);
+    nums.replaceRange(replaceIndex, replaceIndex + 1, [max!]);
+    return int.parse(nums.join());
+  }
+
   /// 2171. 拿出最少数目的魔法豆
   ///
   /// * 题目解：
@@ -107,6 +151,7 @@ class _MediumTestState extends State<MediumTest> {
   Widget build(BuildContext context) {
     final data = [
       ButtonData('82. 删除排序链表中的重复元素 II', deleteDuplicates_82),
+      ButtonData('670. 最大交换', maximumSwap_670),
       ButtonData('2171. 拿出最少数目的魔法豆', minimumRemoval_2171),
       ButtonData('2645. 构造有效字符串的最少插入数', addMinimum_2645),
     ];
@@ -123,6 +168,11 @@ class _MediumTestState extends State<MediumTest> {
         ListNode(1, ListNode(1, ListNode(2, ListNode(3, ListNode(3)))));
     final r = deleteDuplicates(head);
     debugPrint(r.toString());
+  }
+
+  void maximumSwap_670() {
+    final r = maximumSwap(1993);
+    debugPrint('$r');
   }
 
   void minimumRemoval_2171() {
